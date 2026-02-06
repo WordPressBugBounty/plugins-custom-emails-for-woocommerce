@@ -2,7 +2,7 @@
 /**
  * Custom Emails for WooCommerce - Email Settings Class
  *
- * @version 3.5.0
+ * @version 3.6.8
  * @since   1.0.0
  *
  * @author  Algoritmika Ltd
@@ -246,7 +246,7 @@ class Alg_WC_Custom_Email_Settings {
 	/**
 	 * get_placeholder_text.
 	 *
-	 * @version 3.5.0
+	 * @version 3.6.7
 	 * @since   1.0.0
 	 */
 	function get_placeholder_text() {
@@ -254,7 +254,7 @@ class Alg_WC_Custom_Email_Settings {
 		return sprintf(
 			/* Translators: %1$s: Plugin URL, %2$s: Placeholder list, %3$s: Style. */
 			__( 'You can use <a href="%1$s" target="_blank">shortcodes</a> or <span title="%2$s" style="%3$s">standard placeholders</span> here.', 'custom-emails-for-woocommerce' ),
-			'https://wpfactory.com/docs/custom-emails-for-woocommerce/',
+			'https://wpfactory.com/docs/additional-custom-emails-recipients/shortcodes/shortcodes-custom-email/',
 			implode( ', ', $placeholders ),
 			'text-decoration:underline;'
 		);
@@ -275,10 +275,13 @@ class Alg_WC_Custom_Email_Settings {
 	/**
 	 * get_shipping_zones.
 	 *
-	 * @version 2.2.0
+	 * @version 3.6.3
 	 * @since   2.2.0
 	 */
 	function get_shipping_zones( $include_empty_zone = true ) {
+		if ( empty( WC()->countries ) ) {
+			return array();
+		}
 		$zones = WC_Shipping_Zones::get_zones();
 		if ( $include_empty_zone ) {
 			$zone                                                = new WC_Shipping_Zone( 0 );
@@ -445,7 +448,11 @@ class Alg_WC_Custom_Email_Settings {
 		global $wp_roles;
 		return array_merge(
 			array( 'alg_wc_ce_guest' => __( 'No role (guest)', 'custom-emails-for-woocommerce' ) ),
-			( ! empty( $wp_roles->roles ) ? wp_list_pluck( apply_filters( 'editable_roles', $wp_roles->roles ), 'name' ) : array() )
+			(
+				! empty( $wp_roles->roles ) ?
+				wp_list_pluck( apply_filters( 'editable_roles', $wp_roles->roles ), 'name' ) : // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
+				array()
+			)
 		);
 	}
 
@@ -486,7 +493,7 @@ class Alg_WC_Custom_Email_Settings {
 	/**
 	 * get_form_fields.
 	 *
-	 * @version 2.9.9
+	 * @version 3.6.8
 	 * @since   1.0.0
 	 *
 	 * @todo    (dev) load this in admin only (see `get_ajax_options()`)?
@@ -499,7 +506,7 @@ class Alg_WC_Custom_Email_Settings {
 	 */
 	function get_form_fields( $email ) {
 		$fields = array();
-		require( 'class-alg-wc-custom-email-settings-fields.php' );
+		require plugin_dir_path( __FILE__ ) . 'class-alg-wc-custom-email-settings-fields.php';
 		return $fields;
 	}
 

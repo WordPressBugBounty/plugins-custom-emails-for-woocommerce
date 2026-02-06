@@ -2,7 +2,7 @@
 /**
  * Custom Emails for WooCommerce - Shortcodes Class
  *
- * @version 3.6.0
+ * @version 3.6.5
  * @since   1.0.0
  *
  * @author  Algoritmika Ltd
@@ -125,19 +125,49 @@ class Alg_WC_Custom_Emails_Shortcodes {
 	/**
 	 * translate_get_current_language.
 	 *
-	 * @version 3.6.0
+	 * @version 3.6.5
 	 * @since   3.6.0
 	 *
-	 * @todo    (dev) WPML, Polylang: order language (see `get_order_wpml_language()`)
+	 * @todo    (v3.6.5) merge with `Alg_WC_Custom_Email_Order_Validator::get_order_wpml_language()`?
+	 * @todo    (v3.6.5) WPML and Polylang: test?
+	 * @todo    (v3.6.5) WPML: `wpml_language` or `wpml_languages`?
 	 * @todo    (v3.6.0) use `get_locale()`?
 	 * @todo    (v3.6.0) use `$_POST['language']`?
 	 *
+	 * @see     https://wpml.org/forums/topic/meta-key-when-creating-an-order-in-woocommerce/
 	 * @see     https://translatepress.com/docs/developers/
 	 */
 	function translate_get_current_language() {
 
 		// Order
 		if ( $this->order ) {
+
+			// WPML (`wpml_languages` meta)
+			if (
+				( $languages = $this->order->get_meta( 'wpml_languages' ) ) &&
+				! empty( $languages ) &&
+				( $languages = maybe_unserialize( $languages ) ) &&
+				! empty( $languages[0] )
+			) {
+				return $languages[0];
+			}
+
+			// WPML (`wpml_language` meta)
+			if ( ( $lang = $this->order->get_meta( 'wpml_language' ) ) ) {
+				return $lang;
+			}
+
+			// Polylang
+			if (
+				( $terms = get_the_terms( $this->order->get_id(), 'language' ) ) &&
+				! is_wp_error( $terms )
+			) {
+				foreach ( $terms as $term ) {
+					if ( ! empty( $term->slug ) ) {
+						return $term->slug;
+					}
+				}
+			}
 
 			// TranslatePress
 			if ( '' !== ( $meta_value = $this->order->get_meta( 'trp_language' ) ) ) {
@@ -163,7 +193,7 @@ class Alg_WC_Custom_Emails_Shortcodes {
 	/**
 	 * translate.
 	 *
-	 * @version 3.6.0
+	 * @version 3.6.4
 	 * @since   1.7.0
 	 */
 	function translate( $atts, $content = '' ) {
@@ -214,7 +244,7 @@ class Alg_WC_Custom_Emails_Shortcodes {
 				)
 			) ?
 			'' :
-			wp_kses_post( $content )
+			wp_kses_post( do_shortcode( $content ) )
 		);
 
 	}

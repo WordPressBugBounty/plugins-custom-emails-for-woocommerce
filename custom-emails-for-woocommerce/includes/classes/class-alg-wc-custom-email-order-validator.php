@@ -62,7 +62,7 @@ class Alg_WC_Custom_Email_Order_Validator {
 		}
 
 		// WPML/Polylang language
-		if ( apply_filters( 'wpml_active_languages', null ) ) {
+		if ( apply_filters( 'wpml_active_languages', null ) ) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
 			$required_wpml_languages = $this->email->get_option( 'required_wpml_languages', array() );
 			if ( ! empty( $required_wpml_languages ) && ! in_array( $this->get_order_wpml_language( $order ), $required_wpml_languages ) ) {
 				alg_wc_custom_emails()->core->debug(
@@ -305,6 +305,7 @@ class Alg_WC_Custom_Email_Order_Validator {
 	 * @see     https://wpml.org/wpml-hook/wpml_active_languages/
 	 * @see     https://polylang.pro/doc/function-reference/
 	 *
+	 * @todo    (v3.6.5) WPML: `wpml_language` or `wpml_languages`?
 	 * @todo    (dev) `ICL_LANGUAGE_CODE`?
 	 */
 	function get_order_wpml_language( $order ) {
@@ -327,7 +328,7 @@ class Alg_WC_Custom_Email_Order_Validator {
 		}
 
 		// WPML current language
-		if ( ( $lang = apply_filters( 'wpml_current_language', null ) ) ) {
+		if ( ( $lang = apply_filters( 'wpml_current_language', null ) ) ) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
 			return $lang;
 		}
 

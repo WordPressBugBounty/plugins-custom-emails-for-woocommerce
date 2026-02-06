@@ -1,5 +1,33 @@
 == Changelog ==
 
+= 3.6.8 - 16/01/2026 =
+* Dev - General - "Delete plugin data" tool added.
+* Dev - Developers - `alg_wc_custom_emails_settings_saved` action added.
+* Dev - Coding standards improved.
+
+= 3.6.7 - 13/01/2026 =
+* Fix - Admin settings - "Shortcodes" link fixed.
+* Fix - Readme.txt - "Documentation & How to" link fixed.
+* Tested up to: 6.9.
+* WC tested up to: 10.4.
+
+= 3.6.6 - 23/11/2025 =
+* Dev - Admin Options - Admin actions - Orders > Bulk actions - WooCommerce Subscriptions compatibility.
+
+= 3.6.5 - 20/11/2025 =
+* Dev - Shortcodes - `[translate]` - Get WPML and Polylang order language.
+
+= 3.6.4 - 14/11/2025 =
+* Dev - Shortcodes - `[translate]` - Apply shortcodes in the content.
+* WC tested up to: 10.3.
+
+= 3.6.3 - 15/10/2025 =
+* Fix - Possible "call to a member function `get_continents()`" PHP error fixed (in the `Alg_WC_Custom_Email_Settings` class).
+* Dev - WPFactory Recommendations - Library updated (to v1.0.6).
+
+= 3.6.2 - 22/09/2025 =
+* WC tested up to: 10.2.
+
 = 3.6.1 - 23/06/2025 =
 * Dev - WPFactory Admin Menu - Library updated.
 
